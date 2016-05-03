@@ -21,6 +21,7 @@ const defaultParams =
                                 :fig_width => 6,
                                 :fig_height => 4,
                                 :fig_path=> "figures",
+                                :fig_align => "default",
                                 :dpi => 96,
                                 :term=> false,
                                 :display => false,

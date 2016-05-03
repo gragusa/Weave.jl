@@ -298,6 +298,7 @@ function formatfigures(chunk, docformat::Tex)
     height = chunk.options[:out_height]
     f_pos = chunk.options[:fig_pos]
     f_env = chunk.options[:fig_env]
+    f_align = chink.options[:fig_align]
     result = ""
     figstring = ""
 
@@ -329,7 +330,11 @@ function formatfigures(chunk, docformat::Tex)
                          "$figstring",
                          "\\caption{$caption}\n")
     else
-        result *= figstring
+        if fig_align == "center"            
+            result *= string("\\cenetring\n", "$figstring")
+        else
+            result *= figstring
+        end
     end
 
     if chunk.options[:name] != nothing && f_env !=nothing
@@ -375,23 +380,42 @@ function formatfigures(chunk, docformat::Pandoc)
     return result
 end
 
+
+function _format_aligned_figure(fignames, f_align, f_width, caption)
+    result = ""
+    if f_align=="default"
+        result *= "![$caption]($(fignames[1]))\n"
+    else
+        result *= "<div class='figure' style='text-align: $f_align'>\n"
+        result *= "<img src='$fig' alt = '$caption' width='$f_width'>\n"
+        result *= "<p class='caption'>\n"
+        result *= "<p class='caption'>\n $caption </p>\n</div>\n"
+    end
+    result
+end
+
 function formatfigures(chunk, docformat::Markdown)
     fignames = chunk.figures
     caption = chunk.options[:fig_cap]
+    f_align = chunk.options[:fig_align]
+    f_width = chunk.options[:fig_width]
     result = ""
     figstring = ""
+
 
     length(fignames) > 0 || (return "")
 
     if caption != nothing
-        result *= "![$caption]($(fignames[1]))\n"
+        result *= _format_aligned_figure(fignames[1], f_align, f_width, caption)
         for fig = fignames[2:end]
-            result *= "![]($fig)\n"
-            println("Warning, only the first figure gets a caption\n")
+            result *= _format_aligned_figure(fignames[1], f_align, f_width, "")
+            if fig_align == "default"
+                println("Warning, only the first figure gets a caption\n")
+            end
         end
     else
         for fig in fignames
-            result *= "![]($fig)\n"
+            result *= _format_aligned_figure(fig, f_align, f_width, "")
         end
     end
     return result
