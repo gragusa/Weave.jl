@@ -408,7 +408,7 @@ function formatfigures(chunk, docformat::Markdown)
     if caption != nothing
         result *= _format_aligned_figure(fignames[1], f_align, f_width, caption)
         for fig = fignames[2:end]
-            result *= _format_aligned_figure(fignames[1], f_align, f_width, "")
+            result *= _format_aligned_figure(fig, f_align, f_width, "")
             if fig_align == "default"
                 println("Warning, only the first figure gets a caption\n")
             end

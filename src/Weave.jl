@@ -113,6 +113,23 @@ pop_postexecute_hook(f::Function) = splice!(postexecute_hooks, findfirst(postexe
 
 
 
+function weave2(source ; doctype = :auto, plotlib=:auto,
+        informat=:auto, out_path=:doc, fig_path = "figures", fig_ext = nothing,
+        cache_path = "cache", cache=:off)
+
+    doc = read_doc(source, informat)
+    doc = run(doc, doctype = doctype, plotlib=plotlib,
+            out_path=out_path,
+            fig_path = fig_path, fig_ext = fig_ext, cache_path = cache_path, cache=cache)
+    formatted = format(doc)
+
+    formatted = join(formatted, "\n")
+
+    return formatted
+end
+
+
+
 export weave, list_out_formats, tangle,
         set_chunk_defaults, get_chunk_defaults, restore_chunk_defaults
 
