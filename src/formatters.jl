@@ -330,7 +330,7 @@ function formatfigures(chunk, docformat::Tex)
                          "$figstring",
                          "\\caption{$caption}\n")
     else
-        if fig_align == "center"            
+        if fig_align == "center"
             result *= string("\\cenetring\n", "$figstring")
         else
             result *= figstring
@@ -350,31 +350,48 @@ function formatfigures(chunk, docformat::Tex)
    return result
 end
 
-function formatfigures(chunk, docformat::Pandoc)
-    fignames = chunk.figures
-    caption = chunk.options[:fig_cap]
+function _format_aligned_figure(docformat::Pandoc, fig, falign, width, height, caption)
     result = ""
-    figstring = ""
     attribs = ""
-    width = chunk.options[:out_width]
-    height = chunk.options[:out_height]
-
     #Build figure attibutes
     width == nothing || (attribs = "width=$width")
     (attribs ≠ "" && height ≠ nothing ) && (attribs *= " ")
     height == nothing   || (attribs *= "height=$height")
     attribs == ""    || (attribs = "{$attribs}")
+
+    if falign=="default"
+        result *= "![$caption]($fig){$attribs}\n"
+    else
+        result *= "<div class='figure' style='text-align: $falign'>\n"
+        result *= "<img src='$fig' alt = '$caption' width='$width' height='$height'>\n"
+        if caption!=nothing
+            result *= "<p class='caption'>\n $caption </p>\n</div>\n"
+        end
+    end
+    result
+end
+
+function formatfigures(chunk, docformat::Pandoc)
+    fignames = chunk.figures
+    caption = chunk.options[:fig_cap]
+    falign = chunk.options[:fig_align]
+    result = ""
+    figstring = ""
+    width = chunk.options[:out_width]
+    height = chunk.options[:out_height]
+
     length(fignames) > 0 || (return "")
 
     if caption != nothing
-        result *= "![$caption]($(fignames[1]))$attribs\n"
+        result *= _format_aligned_figure(docformat, fignames[1], falign, width, height, caption)
         for fig = fignames[2:end]
-            result *= "![]($fig)$attribs\n"
+            result *= _format_aligned_figure(docformat, fig, falign, width, height, nothing)
             println("Warning, only the first figure gets a caption\n")
         end
     else
         for fig in fignames
-            result *= "![]($fig)$attribs\\ \n\n"
+            result *= _format_aligned_figure(docformat, fig, falign, width, height, "")
+            # result *= "![]($fig)$attribs\\ \n\n"
         end
     end
     return result
