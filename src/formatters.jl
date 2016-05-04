@@ -398,15 +398,17 @@ function formatfigures(chunk, docformat::Pandoc)
 end
 
 
-function _format_aligned_figure(fignames, f_align, f_width, caption)
+function _format_aligned_figure(docformat::Markdown, fig, falign, width, height, caption)
     result = ""
-    if f_align=="default"
-        result *= "![$caption]($(fignames[1]))\n"
+    if falign=="default"
+        result *= "![$caption]($fig)\n"
     else
-        result *= "<div class='figure' style='text-align: $f_align'>\n"
-        result *= "<img src='$fig' alt = '$caption' width='$f_width'>\n"
-        result *= "<p class='caption'>\n"
-        result *= "<p class='caption'>\n $caption </p>\n</div>\n"
+        result *= "<div class='figure' style='text-align: $falign'>\n"
+        result *= "<img src='$fig' alt='$caption' width='$width' heigh='$height'>\n"
+        if caption!=nothing
+            result *= "<p class='caption'>\n $caption </p>\n"
+        end
+        result *= "</div>\n"
     end
     result
 end
@@ -415,24 +417,24 @@ function formatfigures(chunk, docformat::Markdown)
     fignames = chunk.figures
     caption = chunk.options[:fig_cap]
     f_align = chunk.options[:fig_align]
-    f_width = chunk.options[:fig_width]
+    width = chunk.options[:out_width]
+    height = chunk.options[:out_height]
     result = ""
     figstring = ""
-
 
     length(fignames) > 0 || (return "")
 
     if caption != nothing
-        result *= _format_aligned_figure(fignames[1], f_align, f_width, caption)
+        result *= _format_aligned_figure(docformat, fig, falign, width, heigh, caption)
         for fig = fignames[2:end]
-            result *= _format_aligned_figure(fig, f_align, f_width, "")
+            result *= _format_aligned_figure(docformat, fig, falign, width, height, nothing)
             if fig_align == "default"
                 println("Warning, only the first figure gets a caption\n")
             end
         end
     else
         for fig in fignames
-            result *= _format_aligned_figure(fig, f_align, f_width, "")
+            result *= _format_aligned_figure(docformat, fig, falign, width, height, nothing)
         end
     end
     return result
