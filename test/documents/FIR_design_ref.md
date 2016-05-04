@@ -93,8 +93,7 @@ plot(y = h_db, x = ws, Geom.line,
 ~~~~~~~~~~~~~
 
 
-![](figures/FIR_design_4_1.png)\ 
-
+![](figures/FIR_design_4_1.png) 
 
 
 And again with default options
@@ -107,5 +106,4 @@ plot(y = h_phase, x = ws, Geom.line,
 ~~~~~~~~~~~~~
 
 
-![](figures/FIR_design_5_1.png)\ 
-
+![](figures/FIR_design_5_1.png) 

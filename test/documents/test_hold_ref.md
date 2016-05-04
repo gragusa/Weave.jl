@@ -9,8 +9,7 @@ plot(x = x, y = x)
 ~~~~~~~~~~~~~
 
 
-![](figures/test_hold_1_1.png)\ 
-
+![](figures/test_hold_1_1.png) 
 
 ~~~~{.julia}
 print(x)
@@ -30,8 +29,7 @@ plot(x = x, y = x)
 ~~~~~~~~~~~~~
 
 
-![](figures/test_hold_1_2.png)\ 
-
+![](figures/test_hold_1_2.png) 
 
 ~~~~{.julia}
 display(x)
@@ -59,8 +57,7 @@ julia> plot(x = x, y = x)
 ~~~~~~~~~~~~~
 
 
-![](figures/test_hold_2_1.png)\ 
-
+![](figures/test_hold_2_1.png) 
 
 ~~~~{.julia}
 julia> print(x)
@@ -70,8 +67,7 @@ julia> plot(x = x, y = x)
 ~~~~~~~~~~~~~
 
 
-![](figures/test_hold_2_2.png)\ 
-
+![](figures/test_hold_2_2.png) 
 
 ~~~~{.julia}
 julia> display(x)
@@ -95,8 +91,7 @@ julietta> plot(x = x, y = x)
 ~~~~~~~~~~~~~
 
 
-![](figures/test_hold_3_1.png)\ 
-
+![](figures/test_hold_3_1.png) 
 
 ~~~~{.julia}
 julietta> print(x)
@@ -106,8 +101,7 @@ julietta> plot(x = x, y = x)
 ~~~~~~~~~~~~~
 
 
-![](figures/test_hold_3_2.png)\ 
-
+![](figures/test_hold_3_2.png) 
 
 ~~~~{.julia}
 julietta> display(x)
@@ -139,8 +133,7 @@ plot(x = x, y = x)
 ~~~~~~~~~~~~~
 
 
-![](figures/test_hold_4_1.png)\ 
-
+![](figures/test_hold_4_1.png) 
 
 ~~~~{.julia}
 print(x)
@@ -160,8 +153,7 @@ plot(x = x, y = x)
 ~~~~~~~~~~~~~
 
 
-![](figures/test_hold_4_2.png)\ 
-
+![](figures/test_hold_4_2.png) 
 
 ~~~~{.julia}
 display(x)
@@ -189,8 +181,7 @@ julia> plot(x = x, y = x)
 ~~~~~~~~~~~~~
 
 
-![](figures/test_hold_5_1.png)\ 
-
+![](figures/test_hold_5_1.png) 
 
 ~~~~{.julia}
 julia> print(x)
@@ -200,8 +191,7 @@ julia> plot(x = x, y = x)
 ~~~~~~~~~~~~~
 
 
-![](figures/test_hold_5_2.png)\ 
-
+![](figures/test_hold_5_2.png) 
 
 ~~~~{.julia}
 julia> display(x)
@@ -231,7 +221,5 @@ display(x)
 ~~~~
 
 
-![](figures/test_hold_6_1.png)\ 
-
-![](figures/test_hold_6_2.png)\ 
-
+![](figures/test_hold_6_1.png) 
+![](figures/test_hold_6_2.png) 

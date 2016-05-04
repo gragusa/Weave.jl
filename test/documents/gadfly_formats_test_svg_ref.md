@@ -7,16 +7,15 @@ plot(x=x, y = sin(x), Geom.line)
 ~~~~~~~~~~~~~
 
 
-![sin(x) function.](figures/gadfly_formats_test_sin_fun_1.svg)
+![sin(x) function.](figures/gadfly_formats_test_sin_fun_1.svg) 
 
 
 
-![cos(x) function.](figures/gadfly_formats_test_2_1.svg)
+![cos(x) function.](figures/gadfly_formats_test_2_1.svg) 
 
 
 
-![](figures/gadfly_formats_test_cos2_fun_1.svg)\ 
-
+![](figures/gadfly_formats_test_cos2_fun_1.svg) 
 
 
 
@@ -29,8 +28,7 @@ julia> plot(x=x, y = sin(x), Geom.line)
 ~~~~~~~~~~~~~
 
 
-![](figures/gadfly_formats_test_4_1.svg)\ 
-
+![](figures/gadfly_formats_test_4_1.svg) 
 
 ~~~~{.julia}
 julia> y = 20
@@ -40,8 +38,7 @@ julia> plot(x=x, y = cos(x), Geom.line)
 ~~~~~~~~~~~~~
 
 
-![](figures/gadfly_formats_test_4_2.svg)\ 
-
+![](figures/gadfly_formats_test_4_2.svg) 
 
 
 
@@ -52,8 +49,7 @@ plot(x=x, y = sin(x), Geom.line)
 ~~~~~~~~~~~~~
 
 
-![](figures/gadfly_formats_test_5_1.svg){width=15cm}\ 
-
+![](figures/gadfly_formats_test_5_1.svg){width=15cm} 
 
 ~~~~{.julia}
 y = 20
@@ -61,5 +57,4 @@ plot(x=x, y = cos(x), Geom.line)
 ~~~~~~~~~~~~~
 
 
-![](figures/gadfly_formats_test_5_2.svg){width=15cm}\ 
-
+![](figures/gadfly_formats_test_5_2.svg){width=15cm} 
