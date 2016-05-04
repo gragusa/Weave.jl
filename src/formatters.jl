@@ -298,7 +298,7 @@ function formatfigures(chunk, docformat::Tex)
     height = chunk.options[:out_height]
     f_pos = chunk.options[:fig_pos]
     f_env = chunk.options[:fig_env]
-    f_align = chink.options[:fig_align]
+    f_align = chunk.options[:fig_align]
     result = ""
     figstring = ""
 
@@ -308,14 +308,21 @@ function formatfigures(chunk, docformat::Tex)
     (attribs != "" && height != nothing ) && (attribs *= ",")
     height == nothing    || (attribs *= "height=$height")
 
-
     if f_env != nothing
         result *= """\\begin{$f_env}[$f_pos]\n"""
     end
 
+    if f_align == "center"
+        align_string = "\\center\n"
+    elseif f_align == "right"
+        align_string = "\\raggedright\n"
+    elseif f_align == "left"
+        align_string = "\\raggedleft\n"
+    else
+        align_string = ""
+    end
 
     for fig = fignames
-
 
         if splitext(fig)[2] == ".tex" #Tikz figures
             figstring *= "\\resizebox{$width}{!}{\\input{$fig}}\n"
@@ -326,22 +333,18 @@ function formatfigures(chunk, docformat::Tex)
 
     # Figure environment
     if caption != nothing
-        result *= string("\\center\n",
+        result *= string("$align_string",
                          "$figstring",
                          "\\caption{$caption}\n")
     else
-        if fig_align == "center"
-            result *= string("\\cenetring\n", "$figstring")
-        else
-            result *= figstring
-        end
+        result *= string("$align_string",
+                         "$figstring")
     end
 
     if chunk.options[:name] != nothing && f_env !=nothing
         label = chunk.options[:name]
         result *= "\\label{fig:$label}\n"
     end
-
 
     if f_env != nothing
         result *= "\\end{$f_env}\n"
@@ -360,7 +363,7 @@ function _format_aligned_figure(docformat::Pandoc, fig, falign, width, height, c
     attribs == ""    || (attribs = "{$attribs}")
 
     if falign=="default"
-        result *= "![$caption]($fig){$attribs}\n"
+        result *= "![$caption]($fig)$attribs\\ \n\n"
     else
         result *= "<div class='figure' style='text-align: $falign'>\n"
         result *= "<img src='$fig' alt = '$caption' width='$width' height='$height'>\n"
