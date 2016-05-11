@@ -220,7 +220,6 @@ const md2pdf = Pandoc("Markdown to pdf (requires Pandoc and xelatex)",
                               :doctype=> "md2pdf"))
 
 
-
 type Markdown
    description::AbstractString
    formatdict::Dict{Symbol,Any}
@@ -312,7 +311,7 @@ function formatfigures(chunk, docformat::Tex)
         result *= """\\begin{$f_env}[$f_pos]\n"""
     end
 
-    if f_align == "center"
+    if f_align == "center" || caption != nothing
         align_string = "\\center\n"
     elseif f_align == "right"
         align_string = "\\raggedright\n"
@@ -353,7 +352,7 @@ function formatfigures(chunk, docformat::Tex)
    return result
 end
 
-function _format_aligned_figure(docformat::Pandoc, fig, falign, width, height, caption)
+function _align_figure(docformat::Pandoc, fig, align, width, height, caption)
     result = ""
     attribs = ""
     #Build figure attibutes
@@ -362,22 +361,23 @@ function _format_aligned_figure(docformat::Pandoc, fig, falign, width, height, c
     height == nothing   || (attribs *= "height=$height")
     attribs == ""    || (attribs = "{$attribs}")
 
-    if falign=="default"
-        result *= "![$caption]($fig)$attribs\\ \n\n"
-    else
-        result *= "<div class='figure' style='text-align: $falign'>\n"
+    if align ∈ ["center", "left", "right"]
+        result *= "<div class='figure' style='text-align: $align'>\n"
         result *= "<img src='$fig' alt = '$caption' width='$width' height='$height'>\n"
-        if caption!=nothing
+        if caption!=""
             result *= "<p class='caption'>\n $caption </p>\n</div>\n"
         end
+    else
+        result *= "![$caption]($fig)$attribs \n"
     end
-    result
+    return result
 end
 
 function formatfigures(chunk, docformat::Pandoc)
     fignames = chunk.figures
     caption = chunk.options[:fig_cap]
-    falign = chunk.options[:fig_align]
+    caption = caption==nothing ? "" : caption
+    align = chunk.options[:fig_align]
     result = ""
     figstring = ""
     width = chunk.options[:out_width]
@@ -385,41 +385,37 @@ function formatfigures(chunk, docformat::Pandoc)
 
     length(fignames) > 0 || (return "")
 
-    if caption != nothing
-        result *= _format_aligned_figure(docformat, fignames[1], falign, width, height, caption)
-        for fig = fignames[2:end]
-            result *= _format_aligned_figure(docformat, fig, falign, width, height, nothing)
-            println("Warning, only the first figure gets a caption\n")
-        end
-    else
-        for fig in fignames
-            result *= _format_aligned_figure(docformat, fig, falign, width, height, "")
-            # result *= "![]($fig)$attribs\\ \n\n"
-        end
+    fig = fignames[1]
+    result *= _align_figure(docformat, fig, align, width, height, caption)
+    for fig = fignames[2:end]
+        result *= _align_figure(docformat, fig, align, width, height, "")
+        println("Warning, only the first figure gets a caption\n")
     end
     return result
 end
 
 
-function _format_aligned_figure(docformat::Markdown, fig, falign, width, height, caption)
+function _align_figure(docformat::Markdown, fig, align, width, height, caption)
     result = ""
-    if falign=="default"
-        result *= "![$caption]($fig)\n"
-    else
-        result *= "<div class='figure' style='text-align: $falign'>\n"
+    if align ∈ ["center", "left", "right"]
+        result *= "<div class='figure' style='text-align: $align'>\n"
         result *= "<img src='$fig' alt='$caption' width='$width' heigh='$height'>\n"
-        if caption!=nothing
+        if caption!=""
             result *= "<p class='caption'>\n $caption </p>\n"
         end
         result *= "</div>\n"
+    else
+        result *= "![$caption]($fig)\n"
     end
-    result
+
+    return result
 end
 
 function formatfigures(chunk, docformat::Markdown)
     fignames = chunk.figures
     caption = chunk.options[:fig_cap]
-    f_align = chunk.options[:fig_align]
+    caption = caption == nothing ? "" : caption
+    align = chunk.options[:fig_align]
     width = chunk.options[:out_width]
     height = chunk.options[:out_height]
     result = ""
@@ -427,18 +423,11 @@ function formatfigures(chunk, docformat::Markdown)
 
     length(fignames) > 0 || (return "")
 
-    if caption != nothing
-        result *= _format_aligned_figure(docformat, fig, falign, width, heigh, caption)
-        for fig = fignames[2:end]
-            result *= _format_aligned_figure(docformat, fig, falign, width, height, nothing)
-            if fig_align == "default"
-                println("Warning, only the first figure gets a caption\n")
-            end
-        end
-    else
-        for fig in fignames
-            result *= _format_aligned_figure(docformat, fig, falign, width, height, nothing)
-        end
+    fig = fignames[1]
+    result *= _align_figure(docformat, fig, align, width, height, caption)
+    for fig = fignames[2:end]
+        result *= _align_figure(docformat, fig, align, width, height, "")
+        println("Warning, only the first figure gets a caption\n")
     end
     return result
 end

@@ -6,7 +6,6 @@ result = @compat readstring(open("documents/winston_formats.tex"))
 ref = @compat readstring(open("documents/winston_formats_ref.tex"))
 @test result == ref
 
-
 weave("documents/winston_formats.txt", plotlib="Winston", doctype="github")
 result = @compat readstring(open("documents/winston_formats.md"))
 ref = @compat readstring(open("documents/winston_formats_ref.md"))
